@@ -8,6 +8,7 @@ class SkiRouteFinder {
     val memo = Array.ofDim[HighestElevInfo](map.noOfRows, map.noOfCols)
 
     val elevInfo = map.edgePositions.map { case (rowIdx, colIdx) =>
+      //print(s"\nStarting at $rowIdx, $colIdx -> ${map(rowIdx)(colIdx)}: ")
       val endElev = map(rowIdx)(colIdx)
       val (lengthToHighestElev, highestElev) =
         findLengthToHighestElev(map, startingPosition = rowIdx -> colIdx, memo)
@@ -21,10 +22,11 @@ class SkiRouteFinder {
   }
 
   private def findLengthToHighestElev(map: Map, startingPosition: Position, memo: Memo): HighestElevInfo = {
-    findLengthToHighestElevIter(map, startingPosition, previousElev = -1, memo)
+    findLengthToHighestElevIter(map, startingPosition, memo)
   }
 
-  def findLengthToHighestElevIter(map: Map, position: Position, previousElev: Elev, memo: Memo): HighestElevInfo = {
+  def findLengthToHighestElevIter(map: Map, position: Position, memo: Memo): HighestElevInfo = {
+    //print(s"${map(position)} -> ")
     if (memo.isDefined(position)) memo(position)
     else {
       val currentElev = map(position)
@@ -32,8 +34,10 @@ class SkiRouteFinder {
       val neighboringPositions = List(position.up, position.right, position.down, position.left)
 
       val elevationsFromHere: List[HighestElevInfo] = neighboringPositions.map { nextPosition =>
-        if (map.isValidPosition(nextPosition) && map(nextPosition) > currentElev) {
-          val (lengthToHighestElev, highestElev) = findLengthToHighestElevIter(map, nextPosition, currentElev, memo)
+        if (!map.isValidPosition(nextPosition)) {
+          0 -> currentElev
+        } else if (map(nextPosition) > currentElev) {
+          val (lengthToHighestElev, highestElev) = findLengthToHighestElevIter(map, nextPosition, memo)
           (lengthToHighestElev + 1) -> highestElev
         } else {
           1 -> currentElev

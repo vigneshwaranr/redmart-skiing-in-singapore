@@ -17,6 +17,6 @@ object Main extends App {
   }
 
   val (length, drop) = new SkiRouteFinder().findLongestAndDeepRoute(map)
-  println(s"$length -> $drop")
+  println(s"\n Result: $length -> $drop")
 }
 

@@ -21,11 +21,7 @@ class SkiRouteFinder {
     longestDrop -> steepestDrop
   }
 
-  private def findLengthToHighestElev(map: Map, startingPosition: Position, memo: Memo): HighestElevInfo = {
-    findLengthToHighestElevIter(map, startingPosition, memo)
-  }
-
-  def findLengthToHighestElevIter(map: Map, position: Position, memo: Memo): HighestElevInfo = {
+  private def findLengthToHighestElev(map: Map, position: Position, memo: Memo): HighestElevInfo = {
     //print(s"${map(position)} -> ")
     if (memo.isDefined(position)) memo(position)
     else {
@@ -37,7 +33,7 @@ class SkiRouteFinder {
         if (!map.isValidPosition(nextPosition)) {
           0 -> currentElev
         } else if (map(nextPosition) > currentElev) {
-          val (lengthToHighestElev, highestElev) = findLengthToHighestElevIter(map, nextPosition, memo)
+          val (lengthToHighestElev, highestElev) = findLengthToHighestElev(map, nextPosition, memo)
           (lengthToHighestElev + 1) -> highestElev
         } else {
           1 -> currentElev

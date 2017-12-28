@@ -18,8 +18,6 @@ package object skiing {
     def noOfRows = map.length
     def noOfCols = map.headOption.map(_.length).getOrElse(0)
 
-    def edgePositions = new MapEdgeIterator(map)
-
     def isValidPosition(position: Position): Boolean = {
       val (rowIdx, colIdx) = position
 

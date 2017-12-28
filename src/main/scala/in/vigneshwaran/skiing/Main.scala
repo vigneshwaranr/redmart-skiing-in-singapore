@@ -16,7 +16,7 @@ object Main extends App {
     }
   }
 
-  val (length, drop) = new SkiRouteFinder().findLongestAndDeepRoute(map)
+  val (length, drop) = new SkiRouteFinder().findLongestAndSteepestDive(map)
   println(s"\n Result: $length -> $drop")
 }
 

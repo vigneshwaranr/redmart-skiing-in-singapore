@@ -2,16 +2,19 @@ package in.vigneshwaran.skiing
 
 class SkiRouteFinder {
 
-  def findLongestAndDeepRoute(map: Map): (Length, Drop) = {
+  def findLongestAndSteepestDive(map: Map): (Length, Drop) = {
     require(map.noOfRows > 0 && map.noOfCols > 0)
     
     val memo = Array.ofDim[HighestElevInfo](map.noOfRows, map.noOfCols)
 
-    val elevInfo = map.edgePositions.map { case (rowIdx, colIdx) =>
+    val elevInfo = for {
+      rowIdx <- 0 until map.noOfRows
+      colIdx <- 0 until map.noOfCols
+    } yield {
       //print(s"\nStarting at $rowIdx, $colIdx -> ${map(rowIdx)(colIdx)}: ")
       val endElev = map(rowIdx)(colIdx)
       val (lengthToHighestElev, highestElev) =
-        findLengthToHighestElev(map, startingPosition = rowIdx -> colIdx, memo)
+        findLengthToHighestElev(map, position = rowIdx -> colIdx, memo)
 
       val drop = highestElev - endElev
       lengthToHighestElev -> drop
